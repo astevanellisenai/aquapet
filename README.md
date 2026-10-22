@@ -83,6 +83,7 @@ O painel administrativo apresenta:
 - PostgreSQL
 - pg
 - express-session
+- Multer
 - Nodemon
 - HTML
 - CSS
@@ -152,6 +153,36 @@ cd aquapet
 
 ```bash
 npm install
+```
+
+Esse comando instalará todas as dependências registradas no `package.json`, incluindo o **Nodemon**.
+
+### 3. Instalar o Nodemon separadamente, se necessário
+
+Caso o Nodemon não tenha sido instalado corretamente ou você queira instalá-lo manualmente no projeto, execute:
+
+```bash
+npm install nodemon
+```
+
+Opcionalmente, para disponibilizar o Nodemon globalmente no computador:
+
+```bash
+npm install -g nodemon
+```
+
+O projeto já possui o seguinte script no `package.json`:
+
+```json
+"scripts": {
+  "start": "nodemon app.js"
+}
+```
+
+Por isso, depois da instalação das dependências, basta utilizar:
+
+```bash
+npm start
 ```
 
 ---
