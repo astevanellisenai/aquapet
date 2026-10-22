@@ -1,0 +1,36 @@
+<%- include('../includes/header.ejs', { titulo: 'Nova Categoria' }) %>
+
+<main class="p-4 md:p-6 bg-neutra-50 min-h-screen flex flex-col items-center justify-center">
+  <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md border border-gray-200">
+    <h2 class="text-2xl font-semibold text-sistema-700 mb-6 text-center">Cadastrar Nova Categoria</h2>
+
+    <% if (typeof mensagem !=='undefined' && mensagem) { %>
+      <p class="text-red-600 mb-4"><%= mensagem %></p>
+    <% } %>
+
+    <form action="/categorias/novo" method="POST" class="flex flex-col gap-4">
+      <!-- Nome da Categoria -->
+      <div>
+        <label for="nome_categoria" class="block text-sm font-medium text-gray-700 mb-1">Nome da Categoria</label>
+        <input type="text" id="nome_categoria" name="nome_categoria" required
+               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-sistema-500 focus:border-sistema-500 outline-none" />
+      </div>
+
+      <!-- Status (com fallback para desmarcado) -->
+      <div class="flex items-center gap-2 mt-2">
+        <input type="hidden" name="ativa" value="0">
+        <input type="checkbox" id="ativa" name="ativa" value="1" checked
+               class="h-4 w-4 text-sistema-600 border-gray-300 rounded focus:ring-sistema-500">
+        <label for="ativa" class="text-sm text-gray-700">Categoria ativa</label>
+      </div>
+
+      <!-- Botões -->
+      <div class="flex justify-end gap-3 mt-4">
+        <a href="/categorias" class="px-4 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-500 transition">Cancelar</a>
+        <button type="submit" class="px-4 py-2 rounded-md bg-sistema-600 text-white hover:bg-sistema-700 transition">Salvar</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('../includes/footer.ejs') %>

@@ -1,0 +1,75 @@
+<%- include('../includes/header.ejs', { titulo: 'Editar Movimentação' }) %>
+
+  <main class="p-4 md:p-6 bg-neutra-50 min-h-screen flex flex-col items-center">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-200 w-full max-w-2xl p-6">
+
+      <% if (typeof mensagem !=='undefined' && mensagem) { %>
+        <div class="mb-4 rounded-lg border border-erro-200 bg-erro-50 text-erro-700 px-4 py-2">
+          <%= mensagem %>
+        </div>
+        <% } %>
+
+          <h2 class="text-2xl font-semibold text-sistema-700 mb-6 text-center">Editar Movimentação</h2>
+
+          <!-- Formulário -->
+          <form action="/movimentacoes/<%= mov.id_mov %>/editar" method="POST" class="grid grid-cols-1 gap-4">
+
+            <!-- Produto -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Produto</label>
+              <select name="id_produto" required
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:(ring-2 ring-sistema-500 border-sistema-500) outline-none">
+                <% for (let p of produtosCadastrados) { %>
+                  <option value="<%= p.id_produto %>" <%=p.id_produto==mov.id_produto ? 'selected' : '' %>>
+                    <%= p.nome_produto %>
+                  </option>
+                  <% } %>
+              </select>
+            </div>
+
+            <!-- Tipo -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Movimentação</label>
+              <select name="tipo_mov" required
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:(ring-2 ring-sistema-500 border-sistema-500) outline-none">
+                <option value="E" <%=mov.tipo_mov==='E' ? 'selected' : '' %>>Entrada</option>
+                <option value="S" <%=mov.tipo_mov==='S' ? 'selected' : '' %>>Saída</option>
+              </select>
+            </div>
+
+            <!-- Quantidade -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+              <input type="number" name="quantidade" step="0.001" min="0.001" required
+                value="<%= Number(mov.quantidade) %>"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:(ring-2 ring-sistema-500 border-sistema-500) outline-none">
+            </div>
+
+            <!-- Descrição (opcional) -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+              <textarea name="descricao" rows="3"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:(ring-2 ring-sistema-500 border-sistema-500) outline-none"
+                placeholder="Ex.: Compra de fornecedor, venda nº1234, ajuste, etc."><%= mov.descricao || '' %></textarea>
+            </div>
+
+            <!-- Informações (só visual) -->
+            <div class="text-sm text-gray-500 mt-2">
+              <p>Registrada em: <%= new Date(mov.data_mov).toLocaleString('pt-BR') %>
+              </p>
+            </div>
+
+            <!-- Botões -->
+            <div class="flex justify-end gap-3 mt-4">
+              <a href="/movimentacoes" class="px-4 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-500">
+                Cancelar
+              </a>
+              <button type="submit" class="px-4 py-2 rounded-md bg-sistema-600 text-white hover:bg-sistema-700">
+                Atualizar
+              </button>
+            </div>
+          </form>
+    </div>
+  </main>
+
+  <%- include('../includes/footer.ejs') %>

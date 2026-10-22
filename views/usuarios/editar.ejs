@@ -1,0 +1,55 @@
+<%- include('../includes/header.ejs', { titulo }) %>
+
+<main class="p-4 md:p-6 bg-neutra-50 min-h-screen flex flex-col items-center justify-center">
+  <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md border border-gray-200">
+    <h2 class="text-2xl font-semibold text-sistema-700 mb-6 text-center"><%= titulo %></h2>
+
+    <% if (mensagem) { %>
+      <p class="text-red-600 mb-4"><%= mensagem %></p>
+    <% } %>
+
+    <form action="/usuarios/<%= usuario.id_usuario %>/editar" method="POST" class="flex flex-col gap-4">
+
+      <!-- Nome -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+        <input type="text" name="nome" value="<%= usuario.nome || '' %>"
+               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-sistema-500 outline-none" required>
+      </div>
+
+      <!-- Usuário -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Usuário (login)</label>
+        <input type="text" name="usuario" value="<%= usuario.usuario || '' %>"
+               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-sistema-500 outline-none" required>
+      </div>
+
+      <!-- Senha -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nova Senha (opcional)</label>
+        <input type="password" name="senha"
+               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-sistema-500 outline-none"
+               placeholder="(deixe vazio para manter atual)">
+      </div>
+
+      <!-- Admin -->
+      <div class="flex items-center gap-2">
+        <input type="checkbox" name="is_admin" value="1" <%= usuario.is_admin ? 'checked' : '' %> >
+        <label>Administrador</label>
+      </div>
+
+      <!-- Ativo -->
+      <div class="flex items-center gap-2">
+        <input type="checkbox" name="is_ativo" value="1" <%= usuario.is_ativo ? 'checked' : '' %> >
+        <label>Usuário ativo</label>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-4">
+        <a href="/usuarios" class="px-4 py-2 bg-gray-400 text-white rounded-md">Cancelar</a>
+        <button type="submit" class="px-4 py-2 bg-sistema-600 text-white rounded-md">Salvar</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('../includes/footer.ejs') %>

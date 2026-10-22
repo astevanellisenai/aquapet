@@ -1,0 +1,156 @@
+<%- include('../includes/header.ejs', { titulo: 'Lista de Produtos' }) %>
+
+<main class="p-4 md:p-6 pb-24 bg-neutra-50 min-h-screen">
+
+  <!-- Busca + Ordenação -->
+  <form action="/produtos" method="GET" class="flex flex-col md:flex-row gap-3 items-stretch md:items-end mb-4">
+    <div class="flex-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Buscar</label>
+      <input type="text" name="busca" value="<%= busca || '' %>" placeholder="Nome do produto ou categoria"
+        class="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:(ring-2 ring-sistema-500 border-sistema-500)" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Ordenar por</label>
+      <select name="ordenar" onchange="this.form.submit()"
+        class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:(ring-2 ring-sistema-500 border-sistema-500)">
+        <option value="nome_produto"  <%= ordenar==='nome_produto'  ? 'selected' : '' %>>Nome</option>
+        <option value="valor"         <%= ordenar==='valor'         ? 'selected' : '' %>>Valor</option>
+        <option value="quantidade"    <%= ordenar==='quantidade'    ? 'selected' : '' %>>Quantidade</option>
+        <option value="categoria_nome"<%= ordenar==='categoria_nome'? 'selected' : '' %>>Categoria</option>
+        <option value="id_produto"    <%= ordenar==='id_produto'    ? 'selected' : '' %>>ID</option>
+      </select>
+    </div>
+
+    <!-- reinicia na página 1 -->
+    <input type="hidden" name="pg" value="1" />
+
+    <div>
+      <label class="block text-sm font-medium text-transparent mb-1 select-none">.</label>
+      <button type="submit" class="rounded-lg px-4 py-2 bg-sistema-600 text-white hover:bg-sistema-700 shadow">
+        Buscar
+      </button>
+    </div>
+  </form>
+
+  <!-- Grid de Cards -->
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <% for (let produto of produtos) { %>
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200
+                 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+           title="Clique nos botões para editar ou deletar este produto">
+
+        <!-- Imagem 1:1 -->
+        <div class="aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
+          <% if (produto.imagem) { %>
+            <img src="<%= produto.imagem %>" alt="<%= produto.nome_produto %>"
+                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+          <% } else { %>
+            <span class="text-gray-400 text-sm italic">Sem imagem</span>
+          <% } %>
+        </div>
+
+        <!-- Corpo do card -->
+        <div class="flex-1 p-5 flex flex-col justify-between">
+          <div>
+            <!-- Nome -->
+            <h2 class="text-lg font-semibold text-sistema-700 mb-1">
+              <%= produto.nome_produto %>
+            </h2>
+
+            <!-- Categoria -->
+            <p class="text-gray-500 text-sm">Categoria:</p>
+            <p class="text-gray-800 mb-2"><%= produto.categoria_nome || '—' %></p>
+
+            <!-- Valor -->
+            <p class="text-gray-500 text-sm">Valor:</p>
+            <p class="text-gray-800 font-semibold mb-2">
+              R$ <%= Number(produto.valor || 0).toFixed(2).replace('.', ',' ) %>
+            </p>
+
+            <!-- Estoque -->
+            <div class="flex justify-between items-center mb-1">
+              <p class="text-gray-500 text-sm">Estoque:</p>
+              <p class="<%= (produto.quantidade||0) <= (produto.estoque_minimo||0) ? 'text-erro-600 font-semibold' : 'text-gray-800' %>">
+                <%= produto.quantidade || 0 %> unid.
+              </p>
+            </div>
+
+            <!-- Status -->
+            <p class="text-gray-500 text-sm">Status:</p>
+            <p class="<%= produto.ativo ? 'text-sucesso-700 font-medium' : 'text-gray-500 font-medium' %>">
+              <%= produto.ativo ? 'Ativo' : 'Inativo' %>
+            </p>
+          </div>
+
+          <!-- Botões -->
+          <div class="flex justify-end gap-3 mt-4">
+            <!-- Editar -->
+            <form action="/produtos/<%= produto.id_produto %>/editar" method="GET">
+              <button type="submit" title="Editar" class="p-2 rounded-full bg-sucesso-600 hover:bg-sucesso-700 text-white shadow
+                     transition-transform duration-200 hover:scale-110">
+                <img src="/img/edit.svg" alt="Editar" class="w-5 h-5">
+              </button>
+            </form>
+
+            <!-- Deletar -->
+            <form action="/produtos/<%= produto.id_produto %>/deletar" method="POST"
+                  onsubmit="return confirm('Deseja realmente excluir este produto?')">
+              <button type="submit" title="Excluir" class="p-2 rounded-full bg-erro-600 hover:bg-erro-700 text-white shadow
+                     transition-transform duration-200 hover:scale-110">
+                <img src="/img/delete.svg" alt="Deletar" class="w-5 h-5">
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Vazio -->
+  <% if (!produtos || !produtos.length) { %>
+    <div class="mt-6 p-6 border border-dashed border-gray-300 rounded-2xl text-center text-gray-600">
+      Nenhum produto encontrado.
+    </div>
+  <% } %>
+
+  <!-- Paginação (sem 'dir' na URL) -->
+  <%
+    const _busca   = encodeURIComponent(busca || '');
+    const _ordenar = encodeURIComponent(ordenar || 'nome_produto');
+    const mkUrl    = (p) => `/produtos?busca=${_busca}&ordenar=${_ordenar}&pg=${p}`;
+  %>
+
+  <% if (totalPgs && totalPgs > 1) { %>
+    <div class="flex justify-center items-center gap-3 my-6">
+      <% if (pgAtual > 1) { %>
+        <a href="<%= mkUrl(1) %>" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">&laquo; Primeiro</a>
+        <a href="<%= mkUrl(pgAtual - 1) %>" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Anterior</a>
+      <% } %>
+
+      <span class="text-sm text-gray-700">
+        Página <span class="font-semibold"><%= pgAtual %></span>
+        de <span class="font-semibold"><%= totalPgs %></span>
+      </span>
+
+      <% if (pgAtual < totalPgs) { %>
+        <a href="<%= mkUrl(pgAtual + 1) %>" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Próxima</a>
+        <a href="<%= mkUrl(totalPgs) %>" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Última &raquo;</a>
+      <% } %>
+    </div>
+  <% } %>
+
+  <!-- FAB -->
+  <a href="/produtos/novo" aria-label="Adicionar Produto" title="Adicionar novo produto" class="fixed right-6 bottom-24 md:bottom-8 z-50
+    w-14 h-14 rounded-full bg-gradient-to-b from-sistema-500 to-sistema-700 text-white
+    flex items-center justify-center shadow-lg
+    hover:shadow-xl hover:scale-110 transition-all duration-300
+    focus:outline-none focus:ring-4 focus:ring-white/50">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11 5a1 1 0 1 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" />
+    </svg>
+  </a>
+
+</main>
+
+<%- include('../includes/footer.ejs') %>

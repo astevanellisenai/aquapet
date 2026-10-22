@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>
+    <%= (typeof titulo !=='undefined' ? titulo : 'AquaPet — Catálogo de Produtos de Aquarismo' ) %>
+  </title>
+  <meta name="description"
+    content="AquaPet — Paixão pelo aquarismo! Produtos, peixes, plantas e acessórios para seu aquário com qualidade, responsabilidade e amor à vida aquática.">
+  <meta property="og:title" content="AquaPet — Catálogo de Produtos de Aquarismo" />
+  <meta property="og:description"
+    content="Explore o mundo do aquarismo com a AquaPet: inovação, sustentabilidade e bem-estar para seus peixes e plantas." />
+  <meta property="og:image" content="/img/og-cover.png" />
+  <meta name="theme-color" content="#19B8BA" />
+  <link rel="icon" type="image/png" href="/img/logo.png" />
+
+  <!-- Twind (tema + setup via ESM) -->
+  <script type="module" src="/js/twind-setup.js"></script>
+</head>
+
+<body class="bg-neutra-50 text-neutra-700 antialiased">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutra-100">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <img src="/img/logo.png" alt="Logo AquaPet" class="w-12 h-12 md:w-14 md:h-14 object-contain" />
+        <span class="font-semibold text-sistema-700 text-lg md:text-xl">AquaPet</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="#sobre" class="hover:text-sistema-700 transition">Sobre</a>
+        <a href="#produtos" class="hover:text-sistema-700 transition">Produtos</a>
+        <a href="#diferenciais" class="hover:text-sistema-700 transition">Diferenciais</a>
+        <a href="#contato" class="hover:text-sistema-700 transition">Contato</a>
+        <a href="/auth/login"
+          class="ml-2 px-3 py-1.5 rounded-xl bg-sistema-500 text-white hover:bg-sistema-600 transition">Área
+          Administrativa</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero com imagem de fundo + vitrine lateral -->
+  <section class="relative text-white overflow-hidden" style="
+      background-image: linear-gradient(rgba(10, 93, 102, 0.88), rgba(10, 93, 102, 0.88)), url('/img/hero.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    ">
+    <div class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 items-center gap-10 relative z-10">
+      <div class="text-left">
+        <h1 class="text-3xl md:text-5xl font-bold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+          Viva a experiência do aquarismo com paixão,<br class="hidden md:block" /> equilíbrio e tecnologia.
+        </h1>
+
+        <p class="mt-4 text-white/90 text-base md:text-lg leading-relaxed drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+          A <strong>AquaPet</strong> é mais do que uma loja — é um universo dedicado ao bem-estar dos peixes,
+          plantas e aquaristas. Trabalhamos com produtos de alta qualidade, tecnologia eficiente e compromisso
+          ambiental.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#produtos"
+            class="px-6 py-3 rounded-xl bg-white text-sistema-700 font-medium hover:bg-neutra-50 transition shadow-md">
+            Ver Produtos
+          </a>
+          <a href="#contato" class="px-6 py-3 rounded-xl border border-white/40 hover:bg-white/10 transition shadow-md">
+            Fale Conosco
+          </a>
+        </div>
+      </div>
+
+      <!-- Imagem lateral de vitrine -->
+      <div class="relative flex justify-center items-center">
+        <div class="relative aspect-square w-full max-w-[420px] md:max-w-[460px]">
+          <img src="/img/hero.png" alt="Aquário tropical AquaPet"
+            class="w-full h-full object-cover rounded-2xl border border-white/30 shadow-[0_12px_32px_rgba(0,0,0,0.25)] hover:scale-[1.02] transition-transform duration-500 ease-in-out"
+            loading="lazy" decoding="async" />
+        </div>
+        <div
+          class="absolute inset-0 rounded-2xl bg-gradient-to-t from-sistema-900/20 to-transparent pointer-events-none">
+        </div>
+      </div>
+    </div>
+
+    <!-- Onda decorativa inferior -->
+    <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#F5F7F8" fill-opacity="1"
+        d="M0,64L48,53.3C96,43,192,21,288,26.7C384,32,480,64,576,90.7C672,117,768,139,864,144C960,149,1056,139,1152,117.3C1248,96,1344,64,1392,48L1440,32L1440,100L1392,100C1344,100,1248,100,1152,100C1056,100,960,100,864,100C768,100,672,100,576,100C480,100,384,100,288,100C192,100,96,100,48,100L0,100Z" />
+    </svg>
+  </section>
+
+  <!-- Sobre a empresa -->
+  <section id="sobre" class="max-w-7xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-semibold text-sistema-700 mb-6">Sobre a AquaPet</h2>
+    <p class="text-neutra-600 mb-10 leading-relaxed">
+      A <strong>AquaPet</strong> nasceu da paixão pelo aquarismo e da crença de que cada aquário é um pequeno
+      ecossistema que merece cuidado e harmonia.
+      Nossa missão é inspirar aquaristas iniciantes e experientes a criar ambientes aquáticos sustentáveis, bonitos e
+      equilibrados — onde cada detalhe importa.
+      Trabalhamos com produtos de qualidade, informações confiáveis e suporte técnico especializado, sempre com foco na
+      preservação da vida e da água, fonte de tudo.
+    </p>
+
+    <!-- Missão / Visão / Valores -->
+    <div class="grid md:grid-cols-3 gap-6">
+      <article class="p-6 bg-white rounded-xl border border-neutra-100 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+        <h3 class="font-semibold text-lg mb-2 text-neutra-700">Missão</h3>
+        <p class="text-neutra-600">
+          Promover o amor pelo aquarismo através de produtos de qualidade, orientação técnica e respeito à natureza.
+          Queremos que cada cliente tenha uma experiência tranquila, saudável e prazerosa ao cuidar de seu aquário.
+        </p>
+      </article>
+      <article class="p-6 bg-white rounded-xl border border-neutra-100 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+        <h3 class="font-semibold text-lg mb-2 text-neutra-700">Visão</h3>
+        <p class="text-neutra-600">
+          Ser referência nacional no segmento de aquarismo e sustentabilidade, reconhecida por unir tecnologia,
+          conhecimento e cuidado
+          com a vida aquática em todas as suas formas.
+        </p>
+      </article>
+      <article class="p-6 bg-white rounded-xl border border-neutra-100 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+        <h3 class="font-semibold text-lg mb-2 text-neutra-700">Valores</h3>
+        <p class="text-neutra-600">
+          Ética, responsabilidade ambiental, amor aos animais, respeito à água, qualidade em cada detalhe
+          e compromisso com o cliente e com o planeta.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Catálogo de Produtos -->
+  <section id="produtos" class="bg-white border-y border-neutra-100">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-semibold text-sistema-700">Catálogo AquaPet</h2>
+          <p class="text-neutra-500">Explore por categoria e encontre tudo para montar e cuidar do seu aquário com
+            excelência.</p>
+        </div>
+
+        <form method="GET" action="/" class="flex items-center gap-3">
+          <% const _cats=Array.isArray(categoriasAtivas) ? categoriasAtivas : []; %>
+            <% const _catSel=(typeof catSelecionada !=='undefined' ? catSelecionada : '' ); %>
+              <select name="cat" class="px-3 py-2 rounded-lg border border-neutra-200 bg-white text-neutra-700">
+                <option value="">Todas as categorias</option>
+                <% for (const c of _cats) { %>
+                  <option value="<%= c.id_categoria %>" <%=(_catSel==c.id_categoria?'selected':'') %>><%=
+                      c.nome_categoria %>
+                  </option>
+                  <% } %>
+              </select>
+              <button
+                class="px-4 py-2 rounded-lg bg-sistema-500 text-white hover:bg-sistema-600 transition">Filtrar</button>
+        </form>
+      </div>
+
+      <!-- Carrossel -->
+      <div class="relative">
+        <div id="carousel" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-1
+                    scrollbar-thin scrollbar-thumb-sistema-300 scrollbar-track-neutra-100">
+          <% const _prods=Array.isArray(produtosAtivos) ? produtosAtivos : []; %>
+            <% for (const p of _prods) { %>
+              <div
+                class="group flex-shrink-0 w-72 snap-center bg-white rounded-xl border border-neutra-100 shadow hover:shadow-lg transition">
+                <div class="relative w-full aspect-square overflow-hidden rounded-t-xl">
+                  <img src="<%= p.imagem %>" alt="<%= p.nome_produto %>"
+                    class="w-full h-full object-cover group-hover:scale-[1.03] transition" loading="lazy"
+                    decoding="async" />
+                </div>
+                <div class="p-4">
+                  <h3 class="font-medium text-neutra-700 line-clamp-2">
+                    <%= p.nome_produto %>
+                  </h3>
+                  <% if (p.valor) { %>
+                    <p class="mt-1 text-sistema-700 font-semibold">R$ <%= Number(p.valor).toFixed(2) %>
+                    </p>
+                    <% } %>
+                </div>
+              </div>
+              <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nossos Diferenciais -->
+  <section id="diferenciais" class="bg-gradient-to-b from-neutra-50 to-white py-16 border-t border-neutra-100">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-2xl md:text-3xl font-semibold text-sistema-700 mb-10">Nossos Diferenciais</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="p-6 bg-white rounded-xl border border-neutra-100 shadow-md hover:shadow-lg transition">
+          <img src="/img/icon_qualidade.png" alt="Qualidade garantida" class="w-16 h-16 mx-auto mb-4" />
+          <h3 class="text-lg font-semibold mb-2">Qualidade Garantida</h3>
+          <p class="text-neutra-600">Trabalhamos apenas com marcas reconhecidas e produtos testados para garantir
+            segurança e durabilidade.</p>
+        </div>
+        <div class="p-6 bg-white rounded-xl border border-neutra-100 shadow-md hover:shadow-lg transition">
+          <img src="/img/icon_atendimento.png" alt="Atendimento técnico" class="w-16 h-16 mx-auto mb-4" />
+          <h3 class="text-lg font-semibold mb-2">Atendimento Especializado</h3>
+          <p class="text-neutra-600">Equipe treinada em aquarismo para orientar desde o iniciante até o profissional.
+          </p>
+        </div>
+        <div class="p-6 bg-white rounded-xl border border-neutra-100 shadow-md hover:shadow-lg transition">
+          <img src="/img/icon_ecologia.png" alt="Sustentabilidade" class="w-16 h-16 mx-auto mb-4" />
+          <h3 class="text-lg font-semibold mb-2">Sustentabilidade</h3>
+          <p class="text-neutra-600">Priorizamos fornecedores e práticas que respeitam o meio ambiente e preservam a
+            vida aquática.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contato -->
+  <section id="contato" class="bg-neutra-50 border-t border-neutra-100">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-8">
+      <div>
+        <h2 class="text-2xl font-semibold text-sistema-700 mb-4">Fale Conosco</h2>
+        <p class="text-neutra-600 leading-relaxed">
+          Quer saber mais sobre produtos, montagem de aquários ou manutenção?
+          Entre em contato com nossa equipe especializada — teremos prazer em ajudar!
+        </p>
+        <p class="mt-4 text-neutra-600">Endereço, Cidade/UF • contato@aquapet.com • (00) 00000-0000</p>
+        <img src="/img/mapa.png" alt="Mapa AquaPet" class="mt-4 w-full rounded-xl border border-neutra-100"
+          loading="lazy" decoding="async" />
+      </div>
+      <form class="bg-white rounded-xl border border-neutra-100 p-6 grid gap-4" action="/contato" method="POST">
+        <input
+          class="px-4 py-3 rounded-lg border border-neutra-200 focus:outline-none focus:ring-2 focus:ring-sistema-300"
+          type="text" name="nome" placeholder="Seu nome" required />
+        <input
+          class="px-4 py-3 rounded-lg border border-neutra-200 focus:outline-none focus:ring-2 focus:ring-sistema-300"
+          type="email" name="email" placeholder="Seu e-mail" required />
+        <textarea
+          class="px-4 py-3 rounded-lg border border-neutra-200 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-sistema-300"
+          name="mensagem" placeholder="Sua mensagem" required></textarea>
+        <button class="px-5 py-3 rounded-xl bg-sistema-500 text-white hover:bg-sistema-600 transition">Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-neutra-100 bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row gap-3 items-center justify-between">
+      <p class="text-sm text-neutra-500">© <%= new Date().getFullYear() %> AquaPet. Todos os direitos reservados.</p>
+      <div class="flex items-center gap-4">
+        <a class="text-sm hover:text-sistema-700 transition" href="/auth/login">Área Administrativa</a>
+        <a class="text-sm hover:text-sistema-700 transition" href="#">Política de Privacidade</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script do Carrossel -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const carrossel = document.getElementById('carousel');
+      if (!carrossel) return;
+      const btnPrev = document.getElementById('prevBtn');
+      const btnNext = document.getElementById('nextBtn');
+      if (!btnPrev || !btnNext) return;
+
+      const atualizarBotoes = () => {
+        const temScroll = carrossel.scrollWidth > carrossel.clientWidth;
+        btnPrev.classList.toggle('hidden', !temScroll);
+        btnNext.classList.toggle('hidden', !temScroll);
+      };
+
+      atualizarBotoes();
+      window.addEventListener('resize', atualizarBotoes);
+
+      btnNext.addEventListener('click', () => {
+        carrossel.scrollBy({ left: 320, behavior: 'smooth' });
+      });
+
+      btnPrev.addEventListener('click', () => {
+        carrossel.scrollBy({ left: -320, behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+
+</html>

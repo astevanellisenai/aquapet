@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema Estoque - <%= titulo %></title>
+
+  <!-- Twind com configuração personalizada -->
+  <script type="module" src="/js/twind-setup.js"></script>
+
+  <!-- Chart.js (UMD) expõe window.Chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+
+<body class="bg-neutra-50">
+  <!-- Header com degradê vermelho -->
+  <header class="bg-gradient-to-r from-sistema-800 via-sistema-700 to-sistema-500 text-white shadow-md border-b border-white/30">
+    <div class="max-w-7xl mx-auto px-6 py-3">
+      <!-- Linha 1: título fixo + usuário -->
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold tracking-wide">Sistema Estoque</h1>
+
+        <% if (typeof usuario !== 'undefined' && usuario.nome) { %>
+          <p class="text-sm opacity-90">
+            Bem-vindo, <span class="font-semibold"><%= usuario.nome %></span>
+          </p>
+        <% } %>
+      </div>
+
+      <!-- Linha 2: título da página + menu -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-2">
+        <h2 class="text-base sm:text-lg font-semibold text-sistema-50 drop-shadow-sm text-center sm:text-left">
+          <%= titulo %>
+        </h2>
+
+      <!-- Navegação -->
+      <nav class="flex flex-wrap items-center gap-4 text-sm opacity-90">
+        <a href="/admin" class="hover:underline">Dashboard</a>
+        <span class="opacity-70">|</span>
+        <a href="/categorias" class="hover:underline">Categorias</a>
+        <span class="opacity-70">|</span>
+        <a href="/produtos" class="hover:underline">Produtos</a>
+        <span class="opacity-70">|</span>
+        <a href="/movimentacoes" class="hover:underline">Movimentações</a>
+        <span class="opacity-70">|</span>
+ 
+        <% if (usuario && usuario.is_admin) { %>
+          <a href="/usuarios" class="hover:underline">Usuários</a>
+          <span class="opacity-70">|</span>
+        <% } %>
+         <a href="/auth/logout" class="text-white hover:underline font-medium">Sair</a>
+      </nav>
+
+      </div>
+    </div>
+  </header>

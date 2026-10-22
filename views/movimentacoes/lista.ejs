@@ -1,0 +1,151 @@
+<%- include('../includes/header.ejs', { titulo: 'Movimentações' }) %>
+
+  <main class="p-4 md:p-6 bg-neutra-50 min-h-screen">
+
+    <% if (typeof mensagem !=='undefined' && mensagem) { %>
+      <div class="mb-4 rounded-lg border border-erro-200 bg-erro-50 text-erro-700 px-4 py-2">
+        <%= mensagem %>
+      </div>
+      <% } %>
+
+        <!-- Busca + Ordenação -->
+        <form action="/movimentacoes" method="GET"
+          class="flex flex-col md:flex-row gap-3 items-stretch md:items-end mb-4">
+          <!-- Buscar -->
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Buscar por produto</label>
+            <input type="text" name="busca" value="<%= busca || '' %>" placeholder="Ex.: Ração, Betta, Aquário 60L"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:(ring-2 ring-sistema-500 border-sistema-500)"
+              aria-label="Buscar por produto" />
+          </div>
+
+          <!-- Ordenar -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Ordenar por</label>
+            <select name="ordenar" onchange="this.form.submit()"
+              class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:(ring-2 ring-sistema-500 border-sistema-500)">
+              <option value="data_mov" <%=ordenar==='data_mov' ? 'selected' : '' %>>Data</option>
+              <option value="nome_produto" <%=ordenar==='nome_produto' ? 'selected' : '' %>>Produto</option>
+              <option value="nome_usuario" <%=ordenar==='nome_usuario' ? 'selected' : '' %>>Usuário</option>
+            </select>
+          </div>
+
+
+          <!-- reinicia na página 1 -->
+          <input type="hidden" name="pg" value="1" />
+
+          <div>
+            <label class="block text-sm font-medium text-transparent mb-1 select-none">.</label>
+            <button class="rounded-lg px-4 py-2 bg-sistema-600 text-white hover:bg-sistema-700">Aplicar</button>
+          </div>
+        </form>
+
+        <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 shadow">
+          <table class="min-w-[720px] w-full text-sm border-collapse">
+            <thead class="bg-sistema-700 text-white">
+              <tr>
+                <th class="px-3 py-2 text-left">Data</th>
+                <th class="px-3 py-2 text-left">Produto</th>
+                <th class="px-3 py-2 text-left">Tipo</th>
+                <th class="px-3 py-2 text-right">Quantidade</th>
+                <th class="px-3 py-2 text-left">Descrição</th>
+                <th class="px-3 py-2 text-left">Usuário</th>
+                <th class="px-3 py-2 text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (Array.isArray(movimentacoes) && movimentacoes.length) { %>
+                <% for (let m of movimentacoes) { %>
+                  <tr class="border-b border-neutra-200 hover:bg-neutra-50 transition">
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <%= new Date(m.data_mov).toLocaleString('pt-BR') %>
+                    </td>
+                    <td class="px-3 py-2">
+                      <%= m.nome_produto %>
+                    </td>
+                    <td class="px-3 py-2 font-semibold <%= m.tipo_mov === 'E' ? 'text-green-700' : 'text-red-700' %>">
+                      <%= m.tipo_mov==='E' ? 'Entrada' : 'Saída' %>
+                    </td>
+                    <td class="px-3 py-2 text-right">
+                      <%= Number(m.quantidade).toLocaleString('pt-BR') %>
+                    </td>
+                    <td class="px-3 py-2">
+                      <%= m.descricao || '-' %>
+                    </td>
+                    <td class="px-3 py-2">
+                      <%= m.nome_usuario || '-' %>
+                    </td>
+                    <td class="px-3 py-2 text-center">
+                      <div class="inline-flex gap-3">
+                        <!-- Editar (circular com ícone) -->
+                        <a href="/movimentacoes/<%= m.id_mov %>/editar" title="Editar movimentação"
+                          class="bg-sucesso-600 hover:bg-sucesso-700 text-white p-2 rounded-full shadow flex items-center justify-center transition-transform hover:scale-110">
+                          <img src="/img/edit.svg" alt="Editar" class="w-4 h-4 md:w-5 md:h-5">
+                        </a>
+                        <!-- Excluir (circular com ícone) -->
+                        <form action="/movimentacoes/<%= m.id_mov %>/deletar" method="POST"
+                          onsubmit="return confirm('Excluir esta movimentação? O estoque será estornado pelo gatilho.');"
+                          class="inline-block">
+                          <button type="submit" title="Excluir movimentação"
+                            class="bg-erro-600 hover:bg-erro-700 text-white p-2 rounded-full shadow flex items-center justify-center transition-transform hover:scale-110">
+                            <img src="/img/delete.svg" alt="Excluir" class="w-4 h-4 md:w-5 md:h-5">
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                  <% } %>
+                    <% } else { %>
+                      <tr>
+                        <td colspan="7" class="px-3 py-4 text-center text-gray-500 italic">
+                          Nenhuma movimentação registrada.
+                        </td>
+                      </tr>
+                      <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginação -->
+        <% const _busca=encodeURIComponent(busca || '' ); const _ordenar=encodeURIComponent(ordenar || 'data_mov' );
+          const _dir=encodeURIComponent(dir || 'desc' ); const mkUrl=(p)=>
+          `/movimentacoes?busca=${_busca}&ordenar=${_ordenar}&dir=${_dir}&pg=${p}`;
+          %>
+
+          <div class="flex justify-center items-center gap-3 my-6">
+            <% if (pgAtual> 1) { %>
+              <a href="<%= mkUrl(1) %>" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">&laquo;
+                Primeiro</a>
+              <a href="<%= mkUrl(pgAtual - 1) %>"
+                class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Anterior</a>
+              <% } %>
+
+                <span class="text-sm text-gray-700">
+                  Página <span class="font-semibold">
+                    <%= pgAtual %>
+                  </span> de <span class="font-semibold">
+                    <%= totalPgs %>
+                  </span>
+                </span>
+
+                <% if (pgAtual < totalPgs) { %>
+                  <a href="<%= mkUrl(pgAtual + 1) %>"
+                    class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Próxima</a>
+                  <a href="<%= mkUrl(totalPgs) %>"
+                    class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Última &raquo;</a>
+                  <% } %>
+          </div>
+
+          <!-- FAB -->
+          <a href="/movimentacoes/novo" aria-label="Adicionar Movimentação" title="Adicionar nova movimentação" class="fixed right-6 bottom-24 md:bottom-8 z-50
+            w-14 h-14 rounded-full bg-gradient-to-b from-sistema-500 to-sistema-700 text-white
+            flex items-center justify-center shadow-lg
+            hover:shadow-xl hover:scale-110 transition-all duration-300
+            focus:outline-none focus:ring-4 focus:ring-white/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11 5a1 1 0 1 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" />
+            </svg>
+          </a>
+  </main>
+
+  <%- include('../includes/footer.ejs') %>

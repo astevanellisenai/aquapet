@@ -1,0 +1,69 @@
+<%- include('../includes/header.ejs', { titulo: 'Nova Movimentação' }) %>
+
+  <main class="p-4 md:p-6 bg-neutra-50 min-h-screen flex flex-col items-center justify-center">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-2xl border border-gray-200">
+      <h2 class="text-2xl font-semibold text-sistema-700 mb-6 text-center">Cadastrar Nova Movimentação</h2>
+
+      <% if (typeof mensagem !=='undefined' && mensagem) { %>
+        <p class="text-erro-600 mb-4 text-center">
+          <%= mensagem %>
+        </p>
+        <% } %>
+
+          <form action="/movimentacoes/novo" method="POST" class="flex flex-col gap-4">
+
+            <!-- Produto -->
+            <div>
+              <label for="id_produto" class="block text-sm font-medium text-gray-700 mb-1">Produto</label>
+              <select id="id_produto" name="id_produto" required class="w-full border border-gray-300 rounded-md px-3 py-2 
+                       focus:ring-2 focus:ring-sistema-500 focus:border-sistema-500 outline-none">
+                <% for (let p of produtosCadastrados) { %>
+                  <option value="<%= p.id_produto %>">
+                    <%= p.nome_produto %>
+                  </option>
+                  <% } %>
+              </select>
+            </div>
+
+            <!-- Tipo -->
+            <div>
+              <label for="tipo_mov" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Movimentação</label>
+              <select id="tipo_mov" name="tipo_mov" required class="w-full border border-gray-300 rounded-md px-3 py-2 
+                       focus:ring-2 focus:ring-sistema-500 focus:border-sistema-500 outline-none">
+                <option value="">Selecione</option>
+                <option value="E">Entrada</option>
+                <option value="S">Saída</option>
+              </select>
+            </div>
+
+            <!-- Quantidade -->
+            <div>
+              <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+              <input type="number" id="quantidade" name="quantidade" step="0.001" min="0.001" required class="w-full border border-gray-300 rounded-md px-3 py-2 
+                      focus:ring-2 focus:ring-sistema-500 focus:border-sistema-500 outline-none" />
+              <p class="text-xs text-gray-500 mt-1">Use ponto ou vírgula para decimais (ex.: 1,5).</p>
+            </div>
+
+            <!-- Descrição (opcional) -->
+            <div>
+              <label for="descricao" class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+              <textarea id="descricao" name="descricao" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 
+                         focus:ring-2 focus:ring-sistema-500 focus:border-sistema-500 outline-none"
+                placeholder="Ex.: Compra de fornecedor, venda nº1234, ajuste, etc."></textarea>
+            </div>
+
+            <!-- Botões -->
+            <div class="flex justify-end gap-3 mt-6">
+              <a href="/movimentacoes" class="px-4 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-500 transition">
+                Cancelar
+              </a>
+              <button type="submit"
+                class="px-4 py-2 rounded-md bg-sistema-600 text-white hover:bg-sistema-700 transition">
+                Salvar
+              </button>
+            </div>
+          </form>
+    </div>
+  </main>
+
+  <%- include('../includes/footer.ejs') %>
